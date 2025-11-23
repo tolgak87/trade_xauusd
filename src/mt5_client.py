@@ -9,7 +9,7 @@ class MT5Client:
 
     def connect(self) -> bool:
         if not mt5.initialize():
-            print("❌ MT5 init hata:", mt5.last_error())
+            print("❌ MT5 init error:", mt5.last_error())
             self.initialized = False
             return False
         self.initialized = True
@@ -22,10 +22,10 @@ class MT5Client:
 
     def get_account_info(self) -> Optional[AccountInfoModel]:
         if not self.initialized:
-            raise RuntimeError("MT5 bağlı değil. Önce connect() çağır.")
+            raise RuntimeError("MT5 is not connected. Call connect() first.")
         info = mt5.account_info()
         if info is None:
-            print("⚠️ account_info alınamadı:", mt5.last_error())
+            print("⚠️ Could not get account_info:", mt5.last_error())
             return None
 
         return AccountInfoModel(

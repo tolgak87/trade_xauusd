@@ -17,21 +17,21 @@ class AccountInfoModel:
     margin_free: float
 
     def print_pretty(self) -> None:
-        """Açıklamalı formatta ekrana basar."""
-        print(f"login (Hesap numaran): {self.login}")
-        print(f"trade_mode (Demo=0 / Gerçek=1): {self.trade_mode}")
-        print(f"leverage (Kaldıraç oranı): {self.leverage}")
-        print(f"balance (Bakiye): {self.balance}")
-        print(f"equity (Özsermaye): {self.equity}")
-        print(f"trade_allowed (İşlem izni): {self.trade_allowed}")
-        print(f"server (Sunucu): {self.server}")
-        print(f"currency (Para birimi): {self.currency}")
-        print(f"company (Broker / Şirket): {self.company}")
-        print(f"margin_level (Marjin seviyesi): {self.margin_level}")
-        print(f"profit (Toplam kar/zarar): {self.profit}")
-        print(f"margin_free (Kullanılabilir teminat): {self.margin_free}")
+        """Prints to screen in a formatted way with descriptions."""
+        print(f"login (Account number): {self.login}")
+        print(f"trade_mode (Demo=0 / Real=1): {self.trade_mode}")
+        print(f"leverage (Leverage ratio): {self.leverage}")
+        print(f"balance (Balance): {self.balance}")
+        print(f"equity (Equity): {self.equity}")
+        print(f"trade_allowed (Trading permission): {self.trade_allowed}")
+        print(f"server (Server): {self.server}")
+        print(f"currency (Currency): {self.currency}")
+        print(f"company (Broker / Company): {self.company}")
+        print(f"margin_level (Margin level): {self.margin_level}")
+        print(f"profit (Total profit/loss): {self.profit}")
+        print(f"margin_free (Available margin): {self.margin_free}")
 
     def to_json_file(self, filepath: str = "account_info.json") -> None:
-        """Veriyi JSON olarak verilen yola yazar (overwrite)."""
+        """Writes data as JSON to the given path (overwrite)."""
         with open(filepath, "w", encoding="utf-8") as f:
             json.dump(asdict(self), f, indent=4, ensure_ascii=False)

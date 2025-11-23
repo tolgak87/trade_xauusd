@@ -12,11 +12,11 @@ class GoldTrader:
         self.symbol = None
 
     # ----------------------------
-    # Bağlantı işlemleri
+    # Connection operations
     # ----------------------------
     def connect(self) -> bool:
         if not mt5.initialize():
-            print("❌ MT5 init hata:", mt5.last_error())
+            print("❌ MT5 init error:", mt5.last_error())
             return False
         self.connected = True
         return True
@@ -27,7 +27,7 @@ class GoldTrader:
             self.connected = False
 
     # ----------------------------
-    # Sembol ve fiyat bilgisi
+    # Symbol and price information
     # ----------------------------
     def find_gold_symbol(self) -> str | None:
         for candidate in self.CANDIDATE_SYMBOLS:
@@ -41,12 +41,12 @@ class GoldTrader:
 
     def get_current_price(self):
         if not self.symbol:
-            print("⚠️ Önce find_gold_symbol çalıştır.")
+            print("⚠️ Run find_gold_symbol first.")
             return None
 
         tick = mt5.symbol_info_tick(self.symbol)
         if tick is None:
-            print(f"⚠️ {self.symbol} için fiyat alınamadı:", mt5.last_error())
+            print(f"⚠️ Could not get price for {self.symbol}:", mt5.last_error())
             return None
 
         return {
@@ -60,12 +60,12 @@ class GoldTrader:
     # JSON log helper
     # ----------------------------
     def _log_trade(self, trade_data: dict, folder: str = "logs", filename: str = "trades.json"):
-        """İşlemi JSON dosyasına kaydeder (append)."""
+        """Saves the trade to JSON file (append)."""
         os.makedirs(folder, exist_ok=True)
         filepath = os.path.join(folder, filename)
         data = []
 
-        # Mevcut log'u oku
+        # Read existing log
         if os.path.exists(filepath):
             try:
                 with open(filepath, "r", encoding="utf-8") as f:
@@ -73,28 +73,28 @@ class GoldTrader:
             except json.JSONDecodeError:
                 data = []
 
-        # Zaman damgası ekle
+        # Add timestamp
         trade_data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        # Kaydı ekle
+        # Add record
         data.append(trade_data)
 
         with open(filepath, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
 
-        print(f"🧾 İşlem '{filepath}' dosyasına kaydedildi.")
+        print(f"🧾 Trade saved to '{filepath}'.")
 
     # ----------------------------
-    # Trade işlemleri
+    # Trade operations
     # ----------------------------
     def buy_with_risk_reward(self, volume: float = 0.1, risk_usd: float = 3.0, rr_ratio: float = 2.0):
-        """1:2 risk/ödül oranıyla BUY emri gönderir ve loglar."""
+        """Sends BUY order with 1:2 risk/reward ratio and logs it."""
         if not self.symbol:
-            raise RuntimeError("Sembol yok, önce find_gold_symbol çağır.")
+            raise RuntimeError("No symbol, call find_gold_symbol first.")
 
         tick = mt5.symbol_info_tick(self.symbol)
         if tick is None:
-            print("Fiyat alınamadı:", mt5.last_error())
+            print("Could not get price:", mt5.last_error())
             return None
 
         entry = tick.ask
@@ -118,7 +118,7 @@ class GoldTrader:
 
         print(f"📈 BUY {self.symbol} @ {entry} | SL={sl} | TP={tp}")
         result = mt5.order_send(request)
-        print("Sonuç:", result)
+        print("Result:", result)
 
         # JSON log
         trade_log = {
@@ -135,13 +135,13 @@ class GoldTrader:
         return result
 
     def sell_with_risk_reward(self, volume: float = 0.1, risk_usd: float = 3.0, rr_ratio: float = 2.0):
-        """1:2 risk/ödül oranıyla SELL emri gönderir ve loglar."""
+        """Sends SELL order with 1:2 risk/reward ratio and logs it."""
         if not self.symbol:
-            raise RuntimeError("Sembol yok, önce find_gold_symbol çağır.")
+            raise RuntimeError("No symbol, call find_gold_symbol first.")
 
         tick = mt5.symbol_info_tick(self.symbol)
         if tick is None:
-            print("Fiyat alınamadı:", mt5.last_error())
+            print("Could not get price:", mt5.last_error())
             return None
 
         entry = tick.bid
@@ -165,7 +165,7 @@ class GoldTrader:
 
         print(f"📉 SELL {self.symbol} @ {entry} | SL={sl} | TP={tp}")
         result = mt5.order_send(request)
-        print("Sonuç:", result)
+        print("Result:", result)
 
         # JSON log
         trade_log = {
