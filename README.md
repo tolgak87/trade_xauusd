@@ -2,13 +2,14 @@
 
 An automated trading system for gold (XAUUSD) using MetaTrader5 API with risk/reward ratio management.
 
+**I trade Gold only for LONG**, so in this code, I will focus to LONG, not SHORT for gold.
+
 ## 🚀 Features
 
-- **Automated Gold Trading**: Supports multiple gold symbol formats (XAUUSD, XAUUSD., XAUUSD.m, GOLD, GOLD.)
-- **Risk/Reward Management**: Built-in 1:2 risk/reward ratio for both BUY and SELL orders
-- **Trade Logging**: Automatic JSON logging of all trades with timestamps
-- **Account Information**: Detailed account info tracking (balance, equity, margin, etc.)
-- **MT5 Integration**: Full MetaTrader5 API integration
+---
+---
+---
+---
 
 ## 📋 Requirements
 
@@ -39,11 +40,11 @@ Trader/
 ├── app.py                 # Main entry point
 ├── account_info.json      # Account data (auto-generated)
 ├── logs/
-│   └── trades.json       # Trade history log
-└── src/
-    ├── account_info.py   # Account data model
-    ├── mt5_client.py     # MT5 connection client
-    └── trade_gold.py     # Gold trading logic
+---
+---
+---
+---
+
 ```
 
 ## 🎯 Usage
@@ -124,6 +125,3 @@ All trades are automatically logged to `logs/trades.json` with:
 
 This is a trading bot that executes real trades. Use at your own risk. Always test with a demo account first.
 
----
-
-**Version**: v1.0
